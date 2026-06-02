@@ -119,7 +119,7 @@ resource "aws_eip" "aura-restaurant_eip" {
     tags     = { Name = "aura-restaurant-eip" }
 }
 
-resource "elastic_ip" {
+output "elastic_ip" {
     value       = aws_eip.aura-restaurant_eip.public_ip
     description = "Fixed public IP - will never change on restart"
 }
