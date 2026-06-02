@@ -68,8 +68,8 @@ resource "aws_security_group" "aura-restaurant_sg" {
 }
 
 resource "aws_key_pair" "aura-restaurant_key" {
-    key_name   = "aura-restaurant-key"
-    public_key = file("f:/file/devops/aura-restaurant/aura-restaurant-key.pub")
+    key_name   = "aura-restaurant-key-v2"
+    public_key = file("f:/file/devops/aura-restaurant/aura-restaurant-key-v2.pub")
 }
 
 resource "aws_instance" "aura-restaurant_server" {
