@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aura-restaurant-deployment
+  labels:
+    project: aura-restaurant
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      project: aura-restaurant
+  template:
+    metadata:
+      labels:
+        project: aura-restaurant
+    spec:
+      containers:
+        - name: aura-restaurant-container
+          image: sriramsrb/aura-restaurant:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits: 
+              memory: "128Mi"
+              cpu: "100m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aura-restaurant-service
+  labels:
+    project: aura-restaurant
+spec:
+  type: NodePort
+  selector:
+    project: aura-restaurant
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 30080

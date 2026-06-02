@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA — Elevated Food Delivery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --white: #FAFAF8;
+      --black: #0D0D0D;
+      --gold: #C9A84C;
+      --gold-light: #E8D49A;
+      --gold-pale: #F9F3E3;
+      --grey: #8A8A82;
+      --grey-light: #E8E8E4;
+      --radius: 2px;
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ========= TYPOGRAPHY ========= */
+    .display { font-family: 'Cormorant Garamond', serif; }
+
+    /* ========= NAV ========= */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px;
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--grey-light);
+      transition: padding var(--transition);
+    }
+    nav.scrolled { padding: 14px 60px; }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 700; letter-spacing: 6px;
+      color: var(--black); text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--black);
+      text-decoration: none; transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+
+    .lang-switcher {
+      display: flex; gap: 6px;
+    }
+    .lang-btn {
+      font-size: 11px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 8px;
+      border: 1px solid var(--grey-light); background: none;
+      cursor: pointer; border-radius: 2px;
+      color: var(--grey); transition: all 0.2s;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      border-color: var(--gold); color: var(--gold); background: var(--gold-pale);
+    }
+
+    .btn-nav {
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; padding: 12px 28px;
+      background: var(--black); color: var(--white);
+      border: none; cursor: pointer;
+      transition: all var(--transition); text-decoration: none;
+      display: inline-block;
+    }
+    .btn-nav:hover { background: var(--gold); }
+
+    /* ========= HERO ========= */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column;
+      justify-content: center; padding: 160px 60px 100px;
+      position: relative; z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(64px, 7vw, 110px);
+      font-weight: 300; line-height: 0.9;
+      margin-bottom: 36px; letter-spacing: -1px;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+
+    .hero-desc {
+      font-size: 16px; font-weight: 300; color: var(--grey);
+      line-height: 1.8; max-width: 420px; margin-bottom: 52px;
+    }
+
+    .hero-cta { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      font-size: 12px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; padding: 18px 44px;
+      background: var(--gold); color: var(--white);
+      border: none; cursor: pointer;
+      transition: all var(--transition); text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--black); transform: translateY(-2px); }
+
+    .btn-outline {
+      font-size: 12px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; padding: 17px 44px;
+      background: none; color: var(--black);
+      border: 1px solid var(--black); cursor: pointer;
+      transition: all var(--transition); text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+
+    .hero-stats {
+      display: flex; gap: 48px; margin-top: 72px;
+      padding-top: 48px; border-top: 1px solid var(--grey-light);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px; font-weight: 600; line-height: 1;
+      color: var(--black);
+    }
+    .stat-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--grey); margin-top: 6px;
+    }
+
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+    .hero-right img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.92);
+      transition: transform 8s ease;
+    }
+    .hero-right:hover img { transform: scale(1.04); }
+
+    .hero-img-label {
+      position: absolute; bottom: 40px; left: 40px;
+      background: rgba(250,250,248,0.95); backdrop-filter: blur(10px);
+      padding: 16px 24px; border-left: 3px solid var(--gold);
+    }
+    .hero-img-label h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 600;
+    }
+    .hero-img-label p { font-size: 12px; color: var(--grey); margin-top: 2px; }
+
+    /* ========= MARQUEE ========= */
+    .marquee-section {
+      background: var(--black); padding: 20px 0; overflow: hidden;
+    }
+    .marquee-track {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: marquee 25s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; font-weight: 300; font-style: italic;
+      color: var(--white); letter-spacing: 2px;
+      padding: 0 48px; flex-shrink: 0;
+    }
+    .marquee-dot { color: var(--gold); }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ========= SECTION COMMONS ========= */
+    section { padding: 120px 60px; }
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 5vw, 72px);
+      font-weight: 300; line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .section-desc {
+      font-size: 16px; font-weight: 300; color: var(--grey);
+      line-height: 1.8; max-width: 520px;
+    }
+
+    /* ========= FEATURED RESTAURANTS ========= */
+    .restaurants-section { background: var(--white); }
+    .restaurants-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 60px;
+    }
+    .see-all {
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--black);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+      transition: color var(--transition);
+    }
+    .see-all:hover { color: var(--gold); }
+    .see-all svg { transition: transform var(--transition); }
+    .see-all:hover svg { transform: translateX(4px); }
+
+    .restaurants-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 24px;
+    }
+
+    .restaurant-card {
+      position: relative; overflow: hidden;
+      cursor: pointer; background: var(--grey-light);
+    }
+    .restaurant-card:first-child { grid-row: span 2; }
+    .restaurant-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      min-height: 280px;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+    }
+    .restaurant-card:first-child img { min-height: 580px; }
+    .restaurant-card:hover img { transform: scale(1.06); }
+
+    .card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,0.85) 0%, transparent 55%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 28px;
+    }
+    .card-cuisine {
+      font-size: 10px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600; color: white;
+      line-height: 1.1; margin-bottom: 8px;
+    }
+    .restaurant-card:first-child .card-name { font-size: 38px; }
+    .card-meta {
+      display: flex; gap: 16px; align-items: center;
+    }
+    .card-rating {
+      font-size: 13px; color: var(--gold-light); font-weight: 500;
+    }
+    .card-time { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .card-badge {
+      position: absolute; top: 20px; right: 20px;
+      background: var(--gold); color: white;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 6px 14px;
+    }
+
+    /* ========= HOW IT WORKS ========= */
+    .how-section { background: var(--gold-pale); }
+    .how-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 40px; margin-top: 72px;
+    }
+    .how-step { position: relative; }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px; font-weight: 300;
+      color: var(--gold-light); line-height: 1;
+      margin-bottom: 24px;
+    }
+    .step-img {
+      width: 100%; height: 200px; object-fit: cover;
+      margin-bottom: 24px; filter: brightness(0.95);
+    }
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .step-desc {
+      font-size: 14px; font-weight: 300; color: var(--grey);
+      line-height: 1.7;
+    }
+    .step-connector {
+      position: absolute; top: 40px; right: -20px; width: 40px;
+      height: 1px; background: var(--gold); z-index: 1;
+    }
+    .how-step:last-child .step-connector { display: none; }
+
+    /* ========= FOOD CATEGORIES ========= */
+    .categories-section { background: var(--white); }
+    .categories-scroll {
+      display: flex; gap: 20px; overflow-x: auto;
+      padding-bottom: 20px; margin-top: 60px;
+      scrollbar-width: none;
+    }
+    .categories-scroll::-webkit-scrollbar { display: none; }
+
+    .category-card {
+      flex-shrink: 0; width: 220px;
+      cursor: pointer; transition: transform var(--transition);
+    }
+    .category-card:hover { transform: translateY(-8px); }
+    .category-img {
+      width: 100%; height: 260px; object-fit: cover;
+      display: block; margin-bottom: 16px;
+    }
+    .category-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600; margin-bottom: 4px;
+    }
+    .category-count {
+      font-size: 12px; color: var(--grey); letter-spacing: 1px;
+    }
+
+    /* ========= FEATURED DISHES ========= */
+    .dishes-section {
+      background: var(--black); color: white;
+    }
+    .dishes-section .section-label { color: var(--gold); }
+    .dishes-section .section-title { color: white; }
+    .dishes-section .section-desc { color: rgba(255,255,255,0.5); }
+
+    .dishes-layout {
+      display: grid; grid-template-columns: 1fr 1.2fr 1fr;
+      gap: 2px; margin-top: 60px;
+    }
+    .dish-card {
+      position: relative; overflow: hidden;
+      cursor: pointer;
+    }
+    .dish-card img {
+      width: 100%; height: 480px; object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease, filter 0.4s ease;
+      filter: brightness(0.75);
+    }
+    .dish-card:hover img { transform: scale(1.08); filter: brightness(0.55); }
+
+    .dish-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 32px 28px;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+      transform: translateY(20px); opacity: 0;
+      transition: all 0.4s ease;
+    }
+    .dish-card:hover .dish-info { transform: translateY(0); opacity: 1; }
+    .dish-always {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 32px 28px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+    }
+    .dish-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 600; color: white;
+      margin-bottom: 6px;
+    }
+    .dish-restaurant { font-size: 12px; color: var(--gold); letter-spacing: 1px; }
+    .dish-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; color: white; margin-top: 12px;
+    }
+    .dish-card:nth-child(2) img { height: 580px; }
+
+    /* ========= PARALLAX BANNER ========= */
+    .banner-section {
+      height: 70vh; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .banner-bg {
+      position: absolute; inset: -20%;
+      background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=95&auto=format&fit=crop') center/cover no-repeat;
+      filter: brightness(0.35);
+    }
+    .banner-content {
+      position: relative; z-index: 2; text-align: center; color: white;
+      padding: 0 60px;
+    }
+    .banner-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 7vw, 96px); font-weight: 300;
+      line-height: 0.95; margin-bottom: 32px;
+    }
+    .banner-content h2 em { color: var(--gold); font-style: italic; }
+    .banner-content p {
+      font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.7);
+      max-width: 500px; margin: 0 auto 44px; line-height: 1.8;
+    }
+
+    /* ========= TESTIMONIALS ========= */
+    .testimonials-section { background: var(--white); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 40px; margin-top: 72px;
+    }
+    .testimonial-card {
+      padding: 40px; border: 1px solid var(--grey-light);
+      position: relative; transition: border-color var(--transition);
+    }
+    .testimonial-card:hover { border-color: var(--gold); }
+    .testimonial-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 60px; color: var(--gold); line-height: 0.5;
+      margin-bottom: 20px;
+    }
+    .testimonial-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-style: italic; line-height: 1.6;
+      color: var(--black); margin-bottom: 32px;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 16px; }
+    .author-avatar {
+      width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    }
+    .author-name { font-size: 14px; font-weight: 600; }
+    .author-loc { font-size: 12px; color: var(--grey); margin-top: 2px; }
+    .stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; }
+
+    /* ========= APP SECTION ========= */
+    .app-section {
+      background: var(--black);
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding: 0; min-height: 80vh; overflow: hidden;
+    }
+    .app-left {
+      padding: 100px 80px; display: flex;
+      flex-direction: column; justify-content: center;
+    }
+    .app-left .section-title { color: white; }
+    .app-left .section-label { color: var(--gold); }
+    .app-left .section-desc { color: rgba(255,255,255,0.5); margin-bottom: 48px; }
+
+    .app-features { display: flex; flex-direction: column; gap: 28px; margin-bottom: 48px; }
+    .app-feature { display: flex; gap: 20px; }
+    .feature-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .feature-title { font-size: 16px; font-weight: 500; color: white; margin-bottom: 6px; }
+    .feature-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    .app-badges { display: flex; gap: 16px; flex-wrap: wrap; }
+    .store-badge {
+      padding: 14px 28px; border: 1px solid rgba(255,255,255,0.2);
+      color: white; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .store-badge:hover { border-color: var(--gold); color: var(--gold); }
+
+    .app-right { position: relative; overflow: hidden; }
+    .app-right img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+
+    /* ========= NEWSLETTER ========= */
+    .newsletter-section {
+      background: var(--gold-pale);
+      text-align: center; padding: 100px 60px;
+    }
+    .newsletter-section .section-title { font-size: clamp(40px, 5vw, 64px); }
+    .newsletter-form {
+      display: flex; gap: 0; max-width: 520px;
+      margin: 48px auto 0; border: 1px solid var(--black);
+    }
+    .newsletter-input {
+      flex: 1; padding: 18px 24px; border: none;
+      background: white; font-family: 'Outfit', sans-serif;
+      font-size: 14px; outline: none; color: var(--black);
+    }
+    .newsletter-input::placeholder { color: var(--grey); }
+    .newsletter-btn {
+      padding: 18px 36px; background: var(--black); color: white;
+      border: none; font-family: 'Outfit', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: background var(--transition);
+    }
+    .newsletter-btn:hover { background: var(--gold); }
+
+    /* ========= PARTNERS ========= */
+    .partners-section { background: var(--white); padding: 80px 60px; }
+    .partners-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--grey);
+      text-align: center; margin-bottom: 48px;
+    }
+    .partners-row {
+      display: flex; justify-content: center; align-items: center;
+      gap: 64px; flex-wrap: wrap;
+    }
+    .partner-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 600; color: var(--grey-light);
+      letter-spacing: 2px; transition: color var(--transition);
+      cursor: default;
+    }
+    .partner-name:hover { color: var(--gold); }
+
+    /* ========= FOOTER ========= */
+    footer {
+      background: var(--black); color: white;
+      padding: 80px 60px 40px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px; margin-bottom: 60px;
+      padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 700; letter-spacing: 6px;
+      color: white; margin-bottom: 6px;
+    }
+    .footer-brand h3 span { color: var(--gold); }
+    .footer-brand p {
+      font-size: 14px; color: rgba(255,255,255,0.45);
+      line-height: 1.7; margin-top: 16px; max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a {
+      font-size: 14px; color: rgba(255,255,255,0.5);
+      text-decoration: none; transition: color var(--transition);
+    }
+    .footer-col a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .social-links { display: flex; gap: 24px; }
+    .social-links a {
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      text-decoration: none; transition: color var(--transition);
+    }
+    .social-links a:hover { color: var(--gold); }
+
+    /* ========= FLOATING CART ========= */
+    .cart-float {
+      position: fixed; bottom: 32px; right: 32px;
+      background: var(--gold); color: white;
+      width: 60px; height: 60px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 999;
+      box-shadow: 0 8px 32px rgba(201,168,76,0.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+      font-size: 22px;
+    }
+    .cart-float:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(201,168,76,0.5); }
+    .cart-count {
+      position: absolute; top: -4px; right: -4px;
+      background: var(--black); color: white;
+      width: 22px; height: 22px; border-radius: 50%;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ========= SCROLL ANIMATIONS ========= */
+    .fade-up {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ========= MOBILE NAV ========= */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      width: 24px; height: 1.5px; background: var(--black);
+      transition: all 0.3s;
+    }
+
+    /* ========= PROMO STRIP ========= */
+    .promo-strip {
+      background: var(--gold); padding: 12px 60px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .promo-strip p {
+      font-size: 13px; font-weight: 500; color: white; letter-spacing: 1px;
+    }
+    .promo-strip strong { font-weight: 700; }
+
+    /* ========= CITY SECTION ========= */
+    .cities-section { background: var(--white); }
+    .cities-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 16px; margin-top: 60px;
+    }
+    .city-card {
+      position: relative; overflow: hidden; cursor: pointer;
+      aspect-ratio: 2/3;
+    }
+    .city-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.65);
+      transition: transform 0.6s ease, filter 0.4s ease;
+    }
+    .city-card:hover img { transform: scale(1.08); filter: brightness(0.45); }
+    .city-name {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600; color: white;
+      text-align: center; white-space: nowrap;
+    }
+    .city-count {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: rgba(255,255,255,0.65); letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* ========= CHEF SECTION ========= */
+    .chefs-section {
+      background: var(--gold-pale);
+    }
+    .chefs-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 32px; margin-top: 64px;
+    }
+    .chef-card { text-align: center; }
+    .chef-img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      margin-bottom: 20px; filter: grayscale(20%);
+      transition: filter 0.4s ease;
+    }
+    .chef-card:hover .chef-img { filter: grayscale(0); }
+    .chef-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 600; margin-bottom: 4px;
+    }
+    .chef-title { font-size: 12px; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+
+    /* ======= LANGUAGE TRANSLATIONS ======= */
+    [data-lang="fr"] [data-en],
+    [data-lang="ar"] [data-en],
+    [data-lang="es"] [data-en] { display: none; }
+
+    [data-lang="en"] [data-fr],
+    [data-lang="ar"] [data-fr],
+    [data-lang="es"] [data-fr] { display: none; }
+
+    [data-lang="en"] [data-ar],
+    [data-lang="fr"] [data-ar],
+    [data-lang="es"] [data-ar] { display: none; }
+
+    [data-lang="en"] [data-es],
+    [data-lang="fr"] [data-es],
+    [data-lang="ar"] [data-es] { display: none; }
+
+    /* RTL support */
+    [data-lang="ar"] { direction: rtl; }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 1100px) {
+      .restaurants-grid { grid-template-columns: 1fr 1fr; }
+      .restaurant-card:first-child { grid-column: span 2; grid-row: span 1; }
+      .restaurant-card:first-child img { min-height: 420px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .cities-grid { grid-template-columns: repeat(3, 1fr); }
+      .chefs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 80px 24px; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 140px 24px 60px; }
+      .hero-right { height: 60vw; }
+      .how-grid { grid-template-columns: repeat(2, 1fr); }
+      .dishes-layout { grid-template-columns: 1fr; }
+      .dish-card:nth-child(2) img { height: 380px; }
+      .dish-card img { height: 320px; }
+      .dish-info { opacity: 1; transform: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .app-section { grid-template-columns: 1fr; }
+      .app-right { height: 50vw; }
+      .app-left { padding: 60px 24px; }
+      .cities-grid { grid-template-columns: repeat(2, 1fr); }
+      .newsletter-form { flex-direction: column; }
+      .promo-strip { padding: 12px 24px; }
+      .restaurants-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PROMO STRIP -->
+<div class="promo-strip">
+  <p>
+    <span data-en>🎉 <strong>Free delivery</strong> on your first 3 orders — Use code <strong>AURA30</strong></span>
+    <span data-fr>🎉 <strong>Livraison gratuite</strong> sur vos 3 premières commandes — Code <strong>AURA30</strong></span>
+    <span data-ar>🎉 <strong>توصيل مجاني</strong> على أول 3 طلبات — كود <strong>AURA30</strong></span>
+    <span data-es>🎉 <strong>Envío gratis</strong> en tus primeros 3 pedidos — Código <strong>AURA30</strong></span>
+  </p>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">AUR<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="#restaurants" data-en>Restaurants</a><a href="#restaurants" data-fr>Restaurants</a><a href="#restaurants" data-ar>مطاعم</a><a href="#restaurants" data-es>Restaurantes</a></li>
+    <li><a href="#dishes" data-en>Menu</a><a href="#dishes" data-fr>Menu</a><a href="#dishes" data-ar>القائمة</a><a href="#dishes" data-es>Menú</a></li>
+    <li><a href="#cities" data-en>Cities</a><a href="#cities" data-fr>Villes</a><a href="#cities" data-ar>مدن</a><a href="#cities" data-es>Ciudades</a></li>
+    <li><a href="#chefs" data-en>Chefs</a><a href="#chefs" data-fr>Chefs</a><a href="#chefs" data-ar>طهاة</a><a href="#chefs" data-es>Chefs</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('ar')">AR</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+    <a href="#" class="btn-nav" data-en>Order Now</a>
+    <a href="#" class="btn-nav" data-fr>Commander</a>
+    <a href="#" class="btn-nav" data-ar>اطلب الآن</a>
+    <a href="#" class="btn-nav" data-es>Pedir Ahora</a>
+  </div>
+  <div class="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ========= HERO ========= -->
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">
+      <span data-en>Premium Food Delivery</span>
+      <span data-fr>Livraison Premium</span>
+      <span data-ar>توصيل طعام فاخر</span>
+      <span data-es>Entrega Premium de Comida</span>
+    </p>
+    <h1 class="hero-title display">
+      <span data-en>Food<br/><em>crafted</em><br/>for you</span>
+      <span data-fr>Cuisine<br/><em>créée</em><br/>pour vous</span>
+      <span data-ar>طعام<br/><em>صُنع</em><br/>لأجلك</span>
+      <span data-es>Comida<br/><em>creada</em><br/>para ti</span>
+    </h1>
+    <p class="hero-desc">
+      <span data-en>Discover the finest restaurants in your city. Gourmet meals from world-class chefs delivered to your door in under 30 minutes.</span>
+      <span data-fr>Découvrez les meilleurs restaurants de votre ville. Repas gastronomiques livrés en moins de 30 minutes.</span>
+      <span data-ar>اكتشف أفضل مطاعم مدينتك. وجبات راقية من أشهر الطهاة تُوصل إلى بابك في أقل من 30 دقيقة.</span>
+      <span data-es>Descubre los mejores restaurantes de tu ciudad. Comidas gourmet de chefs de clase mundial entregadas en menos de 30 minutos.</span>
+    </p>
+    <div class="hero-cta">
+      <a href="#restaurants" class="btn-primary">
+        <span data-en>Explore Restaurants</span>
+        <span data-fr>Explorer</span>
+        <span data-ar>استكشف المطاعم</span>
+        <span data-es>Explorar</span>
+      </a>
+      <a href="#how" class="btn-outline">
+        <span data-en>How It Works</span>
+        <span data-fr>Comment ça marche</span>
+        <span data-ar>كيف يعمل</span>
+        <span data-es>Cómo funciona</span>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num display">800+</div>
+        <div class="stat-label" data-en>Restaurants</div>
+        <div class="stat-label" data-fr>Restaurants</div>
+        <div class="stat-label" data-ar>مطعم</div>
+        <div class="stat-label" data-es>Restaurantes</div>
+      </div>
+      <div>
+        <div class="stat-num display">2M+</div>
+        <div class="stat-label" data-en>Happy Diners</div>
+        <div class="stat-label" data-fr>Clients Satisfaits</div>
+        <div class="stat-label" data-ar>عميل سعيد</div>
+        <div class="stat-label" data-es>Clientes Felices</div>
+      </div>
+      <div>
+        <div class="stat-num display">28</div>
+        <div class="stat-label" data-en>Min Avg. Delivery</div>
+        <div class="stat-label" data-fr>Min de Livraison</div>
+        <div class="stat-label" data-ar>دقيقة للتوصيل</div>
+        <div class="stat-label" data-es>Min Entrega</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1800&q=95&auto=format&fit=crop" alt="Gourmet dish" />
+    <div class="hero-img-label">
+      <h4>Wagyu Beef Tenderloin</h4>
+      <p>⭐ 4.9 · Maison Laurent · 24 min</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Italian Cuisine <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Japanese Sushi <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">French Bistro <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Indian Spice <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Lebanese Mezze <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Mexican Tacos <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Thai Kitchen <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Mediterranean <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">American BBQ <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Chinese Dim Sum <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Italian Cuisine <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Japanese Sushi <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">French Bistro <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Indian Spice <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Lebanese Mezze <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Mexican Tacos <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Thai Kitchen <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Mediterranean <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">American BBQ <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Chinese Dim Sum <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- ========= RESTAURANTS ========= -->
+<section class="restaurants-section" id="restaurants">
+  <div class="restaurants-header fade-up">
+    <div>
+      <p class="section-label">
+        <span data-en>Featured Restaurants</span>
+        <span data-fr>Restaurants Vedettes</span>
+        <span data-ar>المطاعم المميزة</span>
+        <span data-es>Restaurantes Destacados</span>
+      </p>
+      <h2 class="section-title display">
+        <span data-en>Curated for<br/>your palate</span>
+        <span data-fr>Sélectionnés<br/>pour vous</span>
+        <span data-ar>مختارة<br/>لذوقك</span>
+        <span data-es>Curados<br/>para ti</span>
+      </h2>
+    </div>
+    <a href="#" class="see-all">
+      <span data-en>View all restaurants</span>
+      <span data-fr>Voir tous</span>
+      <span data-ar>عرض الكل</span>
+      <span data-es>Ver todos</span>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="restaurants-grid fade-up">
+    <div class="restaurant-card">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=95&auto=format&fit=crop" alt="Maison Laurent" />
+      <div class="card-badge">Top Rated</div>
+      <div class="card-overlay">
+        <p class="card-cuisine">French · Fine Dining</p>
+        <h3 class="card-name">Maison Laurent</h3>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 4.9</span>
+          <span class="card-time">22–35 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="restaurant-card">
+      <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=900&q=95&auto=format&fit=crop" alt="Sakura Omakase" />
+      <div class="card-overlay">
+        <p class="card-cuisine">Japanese · Sushi</p>
+        <h3 class="card-name">Sakura Omakase</h3>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 4.8</span>
+          <span class="card-time">28–40 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="restaurant-card">
+      <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=900&q=95&auto=format&fit=crop" alt="Spice Garden" />
+      <div class="card-badge">New</div>
+      <div class="card-overlay">
+        <p class="card-cuisine">Indian · Tandoor</p>
+        <h3 class="card-name">Spice Garden</h3>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 4.7</span>
+          <span class="card-time">25–38 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="restaurant-card">
+      <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=900&q=95&auto=format&fit=crop" alt="Trattoria Roma" />
+      <div class="card-overlay">
+        <p class="card-cuisine">Italian · Pasta</p>
+        <h3 class="card-name">Trattoria Roma</h3>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 4.8</span>
+          <span class="card-time">20–32 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="restaurant-card">
+      <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=900&q=95&auto=format&fit=crop" alt="El Ranchero" />
+      <div class="card-overlay">
+        <p class="card-cuisine">Mexican · Grill</p>
+        <h3 class="card-name">El Ranchero</h3>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 4.6</span>
+          <span class="card-time">18–30 min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= HOW IT WORKS ========= -->
+<section class="how-section" id="how">
+  <div style="text-align:center;" class="fade-up">
+    <p class="section-label">
+      <span data-en>The Process</span>
+      <span data-fr>Le Processus</span>
+      <span data-ar>كيف يعمل</span>
+      <span data-es>El Proceso</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>From kitchen<br/>to your table</span>
+      <span data-fr>De la cuisine<br/>à votre table</span>
+      <span data-ar>من المطبخ<br/>إلى طاولتك</span>
+      <span data-es>De la cocina<br/>a tu mesa</span>
+    </h2>
+  </div>
+
+  <div class="how-grid fade-up">
+    <div class="how-step">
+      <div class="step-num display">01</div>
+      <img class="step-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=90&auto=format&fit=crop" alt="Choose food" />
+      <h3 class="step-title display">
+        <span data-en>Browse & Choose</span>
+        <span data-fr>Parcourir & Choisir</span>
+        <span data-ar>تصفح واختر</span>
+        <span data-es>Explorar y Elegir</span>
+      </h3>
+      <p class="step-desc">
+        <span data-en>Explore hundreds of restaurants and thousands of dishes curated by food critics.</span>
+        <span data-fr>Explorez des centaines de restaurants sélectionnés par des critiques gastronomiques.</span>
+        <span data-ar>استكشف مئات المطاعم وآلاف الأطباق المختارة من قبل نقاد الطعام.</span>
+        <span data-es>Explora cientos de restaurantes y miles de platos seleccionados por críticos.</span>
+      </p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="how-step">
+      <div class="step-num display">02</div>
+      <img class="step-img" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=90&auto=format&fit=crop" alt="Place order" />
+      <h3 class="step-title display">
+        <span data-en>Place Your Order</span>
+        <span data-fr>Passer Commande</span>
+        <span data-ar>ضع طلبك</span>
+        <span data-es>Haz Tu Pedido</span>
+      </h3>
+      <p class="step-desc">
+        <span data-en>Customize your meal and check out securely in under 60 seconds with saved preferences.</span>
+        <span data-fr>Personnalisez votre repas et payez en toute sécurité en moins de 60 secondes.</span>
+        <span data-ar>خصص وجبتك وأتمم الطلب بأمان في أقل من 60 ثانية.</span>
+        <span data-es>Personaliza tu comida y paga de forma segura en menos de 60 segundos.</span>
+      </p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="how-step">
+      <div class="step-num display">03</div>
+      <img class="step-img" src="https://images.unsplash.com/photo-1600628421055-4d30de868b8f?w=800&q=90&auto=format&fit=crop" alt="Chef prepares" />
+      <h3 class="step-title display">
+        <span data-en>Chef Prepares</span>
+        <span data-fr>Le Chef Prépare</span>
+        <span data-ar>يُحضّر الطاهي</span>
+        <span data-es>El Chef Prepara</span>
+      </h3>
+      <p class="step-desc">
+        <span data-en>Our partner chefs craft your dish fresh with the finest seasonal ingredients sourced daily.</span>
+        <span data-fr>Nos chefs partenaires préparent votre plat avec les meilleurs ingrédients de saison.</span>
+        <span data-ar>يُعد طهاتنا وجبتك طازجة بأجود المكونات الموسمية.</span>
+        <span data-es>Nuestros chefs preparan tu plato fresco con los mejores ingredientes de temporada.</span>
+      </p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="how-step">
+      <div class="step-num display">04</div>
+      <img class="step-img" src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=800&q=90&auto=format&fit=crop" alt="Fast delivery" />
+      <h3 class="step-title display">
+        <span data-en>Swift Delivery</span>
+        <span data-fr>Livraison Rapide</span>
+        <span data-ar>توصيل سريع</span>
+        <span data-es>Entrega Rápida</span>
+      </h3>
+      <p class="step-desc">
+        <span data-en>Track your order in real-time as our dedicated riders deliver straight to your door.</span>
+        <span data-fr>Suivez votre commande en temps réel pendant que nos livreurs vous l'apportent.</span>
+        <span data-ar>تتبع طلبك في الوقت الفعلي بينما يُوصل مندوبنا إلى بابك مباشرة.</span>
+        <span data-es>Sigue tu pedido en tiempo real mientras nuestros riders te lo entregan.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FOOD CATEGORIES ========= -->
+<section class="categories-section" id="categories">
+  <div class="fade-up">
+    <p class="section-label">
+      <span data-en>Cuisines</span>
+      <span data-fr>Cuisines</span>
+      <span data-ar>مطابخ العالم</span>
+      <span data-es>Cocinas</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>World on your plate</span>
+      <span data-fr>Le monde dans votre assiette</span>
+      <span data-ar>العالم على طبقك</span>
+      <span data-es>El mundo en tu plato</span>
+    </h2>
+  </div>
+
+  <div class="categories-scroll fade-up">
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=90&auto=format&fit=crop" alt="Italian" />
+      <div class="category-name display">Italian</div>
+      <div class="category-count">142 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=90&auto=format&fit=crop" alt="Japanese" />
+      <div class="category-name display">Japanese</div>
+      <div class="category-count">98 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=600&q=90&auto=format&fit=crop" alt="Indian" />
+      <div class="category-name display">Indian</div>
+      <div class="category-count">203 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=600&q=90&auto=format&fit=crop" alt="American" />
+      <div class="category-name display">American</div>
+      <div class="category-count">167 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1620143027693-a8b63f0a65bc?w=600&q=90&auto=format&fit=crop" alt="Lebanese" />
+      <div class="category-name display">Lebanese</div>
+      <div class="category-count">54 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1562802378-063ec186a863?w=600&q=90&auto=format&fit=crop" alt="Mexican" />
+      <div class="category-name display">Mexican</div>
+      <div class="category-count">89 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=600&q=90&auto=format&fit=crop" alt="Thai" />
+      <div class="category-name display">Thai</div>
+      <div class="category-count">76 restaurants</div>
+    </div>
+    <div class="category-card">
+      <img class="category-img" src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=90&auto=format&fit=crop" alt="French" />
+      <div class="category-name display">French</div>
+      <div class="category-count">61 restaurants</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FEATURED DISHES ========= -->
+<section class="dishes-section" id="dishes" style="padding-left:0;padding-right:0;padding-bottom:0;">
+  <div style="padding:0 60px 60px;" class="fade-up">
+    <p class="section-label">
+      <span data-en>Signature Dishes</span>
+      <span data-fr>Plats Signatures</span>
+      <span data-ar>الأطباق المميزة</span>
+      <span data-es>Platos Emblema</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>Culinary<br/>masterpieces</span>
+      <span data-fr>Chefs-d'œuvre<br/>culinaires</span>
+      <span data-ar>روائع<br/>الطهي</span>
+      <span data-es>Obras maestras<br/>culinarias</span>
+    </h2>
+  </div>
+
+  <div class="dishes-layout">
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&q=95&auto=format&fit=crop" alt="Margherita Perfetta" />
+      <div class="dish-always">
+        <p class="dish-restaurant">Trattoria Roma</p>
+        <h3 class="dish-name">Margherita Perfetta</h3>
+      </div>
+      <div class="dish-info">
+        <p class="dish-price">$18.50</p>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=1200&q=95&auto=format&fit=crop" alt="Wagyu Omakase Roll" />
+      <div class="dish-always">
+        <p class="dish-restaurant">Sakura Omakase</p>
+        <h3 class="dish-name">Wagyu Omakase Roll</h3>
+      </div>
+      <div class="dish-info">
+        <p class="dish-price">$48.00</p>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1600803907087-f56d462fd26b?w=1200&q=95&auto=format&fit=crop" alt="Butter Chicken Royal" />
+      <div class="dish-always">
+        <p class="dish-restaurant">Spice Garden</p>
+        <h3 class="dish-name">Butter Chicken Royal</h3>
+      </div>
+      <div class="dish-info">
+        <p class="dish-price">$22.00</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second row -->
+  <div class="dishes-layout" style="margin-top:2px;">
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200&q=95&auto=format&fit=crop" alt="Garden Buddha Bowl" />
+      <div class="dish-always">
+        <p class="dish-restaurant">Green Earth</p>
+        <h3 class="dish-name">Garden Buddha Bowl</h3>
+      </div>
+      <div class="dish-info"><p class="dish-price">$16.00</p></div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=95&auto=format&fit=crop" alt="Truffle Smash Burger" />
+      <div class="dish-always">
+        <p class="dish-restaurant">Brooklyn Bites</p>
+        <h3 class="dish-name">Truffle Smash Burger</h3>
+      </div>
+      <div class="dish-info"><p class="dish-price">$24.00</p></div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=95&auto=format&fit=crop" alt="Bouillabaisse Provençal" />
+      <div class="dish-always">
+        <p class="dish-restaurant">Maison Laurent</p>
+        <h3 class="dish-name">Bouillabaisse Provençal</h3>
+      </div>
+      <div class="dish-info"><p class="dish-price">$38.00</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= PARALLAX BANNER ========= -->
+<div class="banner-section">
+  <div class="banner-bg" id="bannerBg"></div>
+  <div class="banner-content fade-up">
+    <h2 class="display">
+      <span data-en>Taste the<br/><em>extraordinary</em></span>
+      <span data-fr>Goûtez<br/><em>l'extraordinaire</em></span>
+      <span data-ar>ذُق<br/><em>الاستثنائي</em></span>
+      <span data-es>Saborea lo<br/><em>extraordinario</em></span>
+    </h2>
+    <p>
+      <span data-en>Join 2 million food lovers who trust AURA for their daily dining experience.</span>
+      <span data-fr>Rejoignez 2 millions d'amateurs de gastronomie qui font confiance à AURA.</span>
+      <span data-ar>انضم إلى 2 مليون محب للطعام يثقون في AURA لتجربتهم اليومية.</span>
+      <span data-es>Únete a 2 millones de amantes de la comida que confían en AURA.</span>
+    </p>
+    <a href="#" class="btn-primary">
+      <span data-en>Start Your Journey</span>
+      <span data-fr>Commencer</span>
+      <span data-ar>ابدأ رحلتك</span>
+      <span data-es>Comenzar</span>
+    </a>
+  </div>
+</div>
+
+<!-- ========= CITIES ========= -->
+<section class="cities-section" id="cities">
+  <div class="fade-up">
+    <p class="section-label">
+      <span data-en>We Deliver Everywhere</span>
+      <span data-fr>Nous livrons partout</span>
+      <span data-ar>نوصل في كل مكان</span>
+      <span data-es>Entregamos en todas partes</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>Find AURA<br/>in your city</span>
+      <span data-fr>Trouvez AURA<br/>dans votre ville</span>
+      <span data-ar>اعثر على AURA<br/>في مدينتك</span>
+      <span data-es>Encuentra AURA<br/>en tu ciudad</span>
+    </h2>
+  </div>
+
+  <div class="cities-grid fade-up">
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=90&auto=format&fit=crop" alt="Paris" />
+      <div class="city-name">Paris</div>
+      <div class="city-count">214 restaurants</div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=90&auto=format&fit=crop" alt="New York" />
+      <div class="city-name">New York</div>
+      <div class="city-count">341 restaurants</div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=800&q=90&auto=format&fit=crop" alt="London" />
+      <div class="city-name">London</div>
+      <div class="city-count">187 restaurants</div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=90&auto=format&fit=crop" alt="Tokyo" />
+      <div class="city-name">Tokyo</div>
+      <div class="city-count">256 restaurants</div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=800&q=90&auto=format&fit=crop" alt="Dubai" />
+      <div class="city-name">Dubai</div>
+      <div class="city-count">129 restaurants</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= CHEFS ========= -->
+<section class="chefs-section" id="chefs">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0;" class="fade-up">
+    <div>
+      <p class="section-label">
+        <span data-en>Our Master Chefs</span>
+        <span data-fr>Nos Grands Chefs</span>
+        <span data-ar>طهاتنا المحترفون</span>
+        <span data-es>Nuestros Grandes Chefs</span>
+      </p>
+      <h2 class="section-title display">
+        <span data-en>The artists<br/>behind the food</span>
+        <span data-fr>Les artistes<br/>derrière le repas</span>
+        <span data-ar>الفنانون<br/>وراء الطعام</span>
+        <span data-es>Los artistas<br/>detrás del plato</span>
+      </h2>
+    </div>
+  </div>
+
+  <div class="chefs-grid fade-up">
+    <div class="chef-card">
+      <img class="chef-img" src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=800&q=90&auto=format&fit=crop" alt="Chef Antoine Roussel" />
+      <div class="chef-name display">Antoine Roussel</div>
+      <div class="chef-title">Executive Chef · Maison Laurent</div>
+    </div>
+    <div class="chef-card">
+      <img class="chef-img" src="https://images.unsplash.com/photo-1581299894007-aaa50297cf16?w=800&q=90&auto=format&fit=crop" alt="Chef Kenji Nakamura" />
+      <div class="chef-name display">Kenji Nakamura</div>
+      <div class="chef-title">Sushi Master · Sakura Omakase</div>
+    </div>
+    <div class="chef-card">
+      <img class="chef-img" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=90&auto=format&fit=crop" alt="Chef Priya Sharma" />
+      <div class="chef-name display">Priya Sharma</div>
+      <div class="chef-title">Head Chef · Spice Garden</div>
+    </div>
+    <div class="chef-card">
+      <img class="chef-img" src="https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?w=800&q=90&auto=format&fit=crop" alt="Chef Marco De Luca" />
+      <div class="chef-name display">Marco De Luca</div>
+      <div class="chef-title">Pasta Maestro · Trattoria Roma</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= TESTIMONIALS ========= -->
+<section class="testimonials-section" id="testimonials">
+  <div class="fade-up" style="text-align:center;">
+    <p class="section-label">
+      <span data-en>What People Say</span>
+      <span data-fr>Ce qu'ils disent</span>
+      <span data-ar>ماذا يقولون</span>
+      <span data-es>Lo que dicen</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>Loved by millions</span>
+      <span data-fr>Aimé par des millions</span>
+      <span data-ar>يحبه الملايين</span>
+      <span data-es>Amado por millones</span>
+    </h2>
+  </div>
+
+  <div class="testimonials-grid fade-up">
+    <div class="testimonial-card">
+      <div class="testimonial-quote display">"</div>
+      <p class="testimonial-text">
+        <span data-en>AURA has completely transformed how I experience dining at home. The quality is indistinguishable from eating in the finest restaurants.</span>
+        <span data-fr>AURA a complètement transformé ma façon de vivre le repas à domicile. La qualité est indiscernable des meilleurs restaurants.</span>
+        <span data-ar>غيّر AURA تمامًا طريقة تجربتي للطعام في المنزل. الجودة لا تختلف عن أفضل المطاعم.</span>
+        <span data-es>AURA ha transformado completamente cómo experimento la gastronomía en casa. La calidad es indistinguible de los mejores restaurantes.</span>
+      </p>
+      <div class="testimonial-author">
+        <img class="author-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=90&auto=format&fit=crop" alt="Sophie M." />
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="author-name">Sophie M.</div>
+          <div class="author-loc">Paris, France</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-quote display">"</div>
+      <p class="testimonial-text">
+        <span data-en>I ordered the Wagyu Omakase Roll and it arrived perfectly packaged, still at the right temperature. Absolutely spectacular.</span>
+        <span data-fr>J'ai commandé le Wagyu Omakase Roll et il est arrivé parfaitement emballé, encore à la bonne température. Absolument spectaculaire.</span>
+        <span data-ar>طلبت Wagyu Omakase Roll ووصل مغلفًا بشكل مثالي، لا يزال بالدرجة الصحيحة. رائع تمامًا.</span>
+        <span data-es>Pedí el Wagyu Omakase Roll y llegó perfectamente empaquetado, a la temperatura correcta. Absolutamente espectacular.</span>
+      </p>
+      <div class="testimonial-author">
+        <img class="author-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=90&auto=format&fit=crop" alt="James T." />
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="author-name">James T.</div>
+          <div class="author-loc">New York, USA</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-quote display">"</div>
+      <p class="testimonial-text">
+        <span data-en>The app is beautiful, delivery is always on time, and the food selection is extraordinary. AURA is in a class of its own.</span>
+        <span data-fr>L'application est magnifique, la livraison toujours à l'heure, et la sélection culinaire extraordinaire. AURA est dans une classe à part.</span>
+        <span data-ar>التطبيق جميل، والتوصيل دائمًا في الوقت المحدد، واختيار الطعام استثنائي. AURA في فئة لا مثيل لها.</span>
+        <span data-es>La app es preciosa, la entrega siempre puntual, y la selección de comida extraordinaria. AURA está en su propia categoría.</span>
+      </p>
+      <div class="testimonial-author">
+        <img class="author-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=90&auto=format&fit=crop" alt="Lina K." />
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="author-name">Lina K.</div>
+          <div class="author-loc">Dubai, UAE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= APP SECTION ========= -->
+<div class="app-section" id="app">
+  <div class="app-left">
+    <p class="section-label">
+      <span data-en>The AURA App</span>
+      <span data-fr>L'application AURA</span>
+      <span data-ar>تطبيق AURA</span>
+      <span data-es>La App de AURA</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>Fine dining<br/>in your pocket</span>
+      <span data-fr>La gastronomie<br/>dans votre poche</span>
+      <span data-ar>الطعام الراقي<br/>في جيبك</span>
+      <span data-es>Alta cocina<br/>en tu bolsillo</span>
+    </h2>
+    <p class="section-desc">
+      <span data-en>The most elegant food delivery experience ever designed. Order, track, and reorder with effortless grace.</span>
+      <span data-fr>L'expérience de livraison la plus élégante jamais conçue. Commandez, suivez et recommandez avec une grâce sans effort.</span>
+      <span data-ar>أرقى تجربة توصيل طعام صُممت على الإطلاق. اطلب وتتبع وأعد الطلب بكل سهولة.</span>
+      <span data-es>La experiencia de entrega de comida más elegante jamás diseñada. Pide, rastrea y vuelve a pedir con gracia effortless.</span>
+    </p>
+    <div class="app-features">
+      <div class="app-feature">
+        <div class="feature-icon">🍽</div>
+        <div>
+          <div class="feature-title" data-en>Real-time tracking</div>
+          <div class="feature-title" data-fr>Suivi en temps réel</div>
+          <div class="feature-title" data-ar>تتبع في الوقت الفعلي</div>
+          <div class="feature-title" data-es>Seguimiento en tiempo real</div>
+          <div class="feature-desc" data-en>Watch your order travel from kitchen to doorstep on a live map.</div>
+          <div class="feature-desc" data-fr>Regardez votre commande voyager de la cuisine à votre porte sur une carte en direct.</div>
+          <div class="feature-desc" data-ar>شاهد طلبك ينتقل من المطبخ إلى بابك على خريطة مباشرة.</div>
+          <div class="feature-desc" data-es>Mira tu pedido viajar desde la cocina hasta tu puerta en un mapa en vivo.</div>
+        </div>
+      </div>
+      <div class="app-feature">
+        <div class="feature-icon">⭐</div>
+        <div>
+          <div class="feature-title" data-en>Curated recommendations</div>
+          <div class="feature-title" data-fr>Recommandations curées</div>
+          <div class="feature-title" data-ar>توصيات مختارة</div>
+          <div class="feature-title" data-es>Recomendaciones curadas</div>
+          <div class="feature-desc" data-en>AI-powered suggestions tailored to your taste profile and past orders.</div>
+          <div class="feature-desc" data-fr>Suggestions alimentées par l'IA, adaptées à votre profil gustatif.</div>
+          <div class="feature-desc" data-ar>اقتراحات مدعومة بالذكاء الاصطناعي مصممة وفق ذوقك وطلباتك السابقة.</div>
+          <div class="feature-desc" data-es>Sugerencias impulsadas por IA adaptadas a tu perfil de sabor.</div>
+        </div>
+      </div>
+      <div class="app-feature">
+        <div class="feature-icon">🔒</div>
+        <div>
+          <div class="feature-title" data-en>Secure & seamless payment</div>
+          <div class="feature-title" data-fr>Paiement sécurisé</div>
+          <div class="feature-title" data-ar>دفع آمن وسلس</div>
+          <div class="feature-title" data-es>Pago seguro y fluido</div>
+          <div class="feature-desc" data-en>One-tap checkout with Apple Pay, Google Pay and all major cards.</div>
+          <div class="feature-desc" data-fr>Paiement en un clic avec Apple Pay, Google Pay et toutes les grandes cartes.</div>
+          <div class="feature-desc" data-ar>دفع بنقرة واحدة مع Apple Pay وGoogle Pay وجميع البطاقات الرئيسية.</div>
+          <div class="feature-desc" data-es>Pago en un toque con Apple Pay, Google Pay y todas las tarjetas principales.</div>
+        </div>
+      </div>
+    </div>
+    <div class="app-badges">
+      <div class="store-badge">
+        <span>🍎</span>
+        <div>
+          <div style="font-size:10px;opacity:0.6;" data-en>Download on the</div>
+          <div style="font-size:10px;opacity:0.6;" data-fr>Télécharger sur</div>
+          <div style="font-size:10px;opacity:0.6;" data-ar>حمّل من</div>
+          <div style="font-size:10px;opacity:0.6;" data-es>Descargar en</div>
+          <div style="font-weight:600;">App Store</div>
+        </div>
+      </div>
+      <div class="store-badge">
+        <span>▶</span>
+        <div>
+          <div style="font-size:10px;opacity:0.6;" data-en>Get it on</div>
+          <div style="font-size:10px;opacity:0.6;" data-fr>Disponible sur</div>
+          <div style="font-size:10px;opacity:0.6;" data-ar>احصل عليه من</div>
+          <div style="font-size:10px;opacity:0.6;" data-es>Consíguelo en</div>
+          <div style="font-weight:600;">Google Play</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="app-right">
+    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=1400&q=95&auto=format&fit=crop" alt="App preview" />
+  </div>
+</div>
+
+<!-- ========= NEWSLETTER ========= -->
+<section class="newsletter-section">
+  <div class="fade-up">
+    <p class="section-label">
+      <span data-en>Stay in the loop</span>
+      <span data-fr>Restez informé</span>
+      <span data-ar>ابق على اطلاع</span>
+      <span data-es>Mantente al día</span>
+    </p>
+    <h2 class="section-title display">
+      <span data-en>Taste what's new<br/>before anyone else</span>
+      <span data-fr>Goûtez les nouveautés<br/>avant tout le monde</span>
+      <span data-ar>جرّب ما هو جديد<br/>قبل أي شخص آخر</span>
+      <span data-es>Prueba lo nuevo<br/>antes que nadie</span>
+    </h2>
+    <p class="section-desc" style="margin:0 auto;text-align:center;">
+      <span data-en>Get exclusive deals, new restaurant openings, and chef specials delivered to your inbox weekly.</span>
+      <span data-fr>Recevez des offres exclusives, les nouvelles ouvertures et les spécialités du chef chaque semaine.</span>
+      <span data-ar>احصل على عروض حصرية وافتتاحات مطاعم جديدة وعروض الطهاة في صندوق بريدك أسبوعيًا.</span>
+      <span data-es>Recibe ofertas exclusivas, nuevas aperturas de restaurantes y especiales de chefs cada semana.</span>
+    </p>
+    <form class="newsletter-form" onsubmit="return false;">
+      <input class="newsletter-input" type="email" placeholder="your@email.com" />
+      <button class="newsletter-btn" type="submit">
+        <span data-en>Subscribe</span>
+        <span data-fr>S'abonner</span>
+        <span data-ar>اشترك</span>
+        <span data-es>Suscribirse</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ========= PARTNERS ========= -->
+<section class="partners-section">
+  <p class="partners-label">
+    <span data-en>Trusted by world-class restaurants</span>
+    <span data-fr>Fait confiance par des restaurants de classe mondiale</span>
+    <span data-ar>موثوق به من قبل مطاعم عالمية</span>
+    <span data-es>Confiado por restaurantes de clase mundial</span>
+  </p>
+  <div class="partners-row">
+    <div class="partner-name">NOBU</div>
+    <div class="partner-name">ZUMA</div>
+    <div class="partner-name">NUSR-ET</div>
+    <div class="partner-name">CIPRIANI</div>
+    <div class="partner-name">HAKKASAN</div>
+    <div class="partner-name">COYA</div>
+  </div>
+</section>
+
+<!-- ========= FOOTER ========= -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>AUR<span>A</span></h3>
+      <p>
+        <span data-en>Elevating food delivery to an art form. We connect the finest restaurants with food lovers across the globe.</span>
+        <span data-fr>Élevant la livraison de nourriture au rang d'art. Nous connectons les meilleurs restaurants aux amateurs de gastronomie à travers le monde.</span>
+        <span data-ar>نرفع توصيل الطعام إلى مستوى الفن. نربط أفضل المطاعم بمحبي الطعام حول العالم.</span>
+        <span data-es>Elevando la entrega de comida a una forma de arte. Conectamos los mejores restaurantes con amantes de la gastronomía en todo el mundo.</span>
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4 data-en>Explore</h4>
+      <h4 data-fr>Explorer</h4>
+      <h4 data-ar>استكشف</h4>
+      <h4 data-es>Explorar</h4>
+      <ul>
+        <li><a href="#" data-en>Restaurants</a><a href="#" data-fr>Restaurants</a><a href="#" data-ar>مطاعم</a><a href="#" data-es>Restaurantes</a></li>
+        <li><a href="#" data-en>Cuisines</a><a href="#" data-fr>Cuisines</a><a href="#" data-ar>مطابخ</a><a href="#" data-es>Cocinas</a></li>
+        <li><a href="#" data-en>Chefs</a><a href="#" data-fr>Chefs</a><a href="#" data-ar>طهاة</a><a href="#" data-es>Chefs</a></li>
+        <li><a href="#" data-en>Cities</a><a href="#" data-fr>Villes</a><a href="#" data-ar>مدن</a><a href="#" data-es>Ciudades</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-en>Company</h4>
+      <h4 data-fr>Société</h4>
+      <h4 data-ar>الشركة</h4>
+      <h4 data-es>Empresa</h4>
+      <ul>
+        <li><a href="#" data-en>About Us</a><a href="#" data-fr>À propos</a><a href="#" data-ar>من نحن</a><a href="#" data-es>Nosotros</a></li>
+        <li><a href="#" data-en>Careers</a><a href="#" data-fr>Carrières</a><a href="#" data-ar>وظائف</a><a href="#" data-es>Empleos</a></li>
+        <li><a href="#" data-en>Press</a><a href="#" data-fr>Presse</a><a href="#" data-ar>صحافة</a><a href="#" data-es>Prensa</a></li>
+        <li><a href="#" data-en>Blog</a><a href="#" data-fr>Blog</a><a href="#" data-ar>مدونة</a><a href="#" data-es>Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-en>Support</h4>
+      <h4 data-fr>Support</h4>
+      <h4 data-ar>الدعم</h4>
+      <h4 data-es>Soporte</h4>
+      <ul>
+        <li><a href="#" data-en>Help Centre</a><a href="#" data-fr>Centre d'aide</a><a href="#" data-ar>مركز المساعدة</a><a href="#" data-es>Centro de ayuda</a></li>
+        <li><a href="#" data-en>Contact Us</a><a href="#" data-fr>Contactez-nous</a><a href="#" data-ar>اتصل بنا</a><a href="#" data-es>Contáctanos</a></li>
+        <li><a href="#" data-en>Privacy Policy</a><a href="#" data-fr>Confidentialité</a><a href="#" data-ar>سياسة الخصوصية</a><a href="#" data-es>Privacidad</a></li>
+        <li><a href="#" data-en>Terms of Service</a><a href="#" data-fr>Conditions</a><a href="#" data-ar>شروط الخدمة</a><a href="#" data-es>Términos</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 AURA Food Platform. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
+      <a href="#">TikTok</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING CART -->
+<div class="cart-float" onclick="cartClick()">
+  🛒
+  <div class="cart-count" id="cartCount">3</div>
+</div>
+
+<script>
+  // ========= NAV SCROLL =========
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ========= PARALLAX =========
+  const bannerBg = document.getElementById('bannerBg');
+  window.addEventListener('scroll', () => {
+    const section = bannerBg.closest('.banner-section');
+    const rect = section.getBoundingClientRect();
+    const offset = rect.top * 0.3;
+    bannerBg.style.transform = `translateY(${offset}px)`;
+  });
+
+  // ========= FADE ON SCROLL =========
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ========= LANGUAGE SWITCHER =========
+  function setLang(lang) {
+    document.documentElement.setAttribute('data-lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // ========= CART =========
+  let cartItems = 3;
+  function cartClick() {
+    cartItems++;
+    document.getElementById('cartCount').textContent = cartItems;
+    const cart = document.querySelector('.cart-float');
+    cart.style.transform = 'scale(1.2) translateY(-4px)';
+    setTimeout(() => cart.style.transform = '', 200);
+  }
+
+  // ========= MOBILE MENU =========
+  function toggleMobileMenu() {
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:70px;left:0;right:0;background:rgba(250,250,248,0.98);padding:32px 24px;gap:24px;z-index:999;border-bottom:1px solid #E8E8E4;';
+    }
+  }
+</script>
+</body>
+</html>
