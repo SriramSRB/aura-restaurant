@@ -1,5 +1,5 @@
 FROM node:20
-WORKDIR /aura restaurant
+WORKDIR /aura-restaurant
 COPY package.json .
 RUN npm install
 COPY . .
